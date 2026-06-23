@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import dotenv from 'dotenv'
+import router from './routes'
 
 //load the dot env before using them 
 dotenv.config()
@@ -11,6 +12,8 @@ const PORT = process.env.PORT || 3000
 //the frontend runs on port 5173
 app.use(cors({ origin: 'http://localhost:5173' }))
 app.use(express.json())
+
+app.use(router)
 
 // just a test route to see that server is running 
 app.get("/", (req, res) => {
