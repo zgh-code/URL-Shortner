@@ -1,18 +1,8 @@
 import { Router } from "express";
+import { nanoid } from "nanoid";
 import prisma from "./prisma"
 
 const router = Router()
-
-// return a 6 digit ranodm short code 
-function shortCodeGen(): string {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let result = ''
-
-    for(let i = 0; i < 6; i++){
-        result += characters.charAt(Math.floor(Math.random() * characters.length))
-    }
-    return result
-}
 
 // in frontend user sends a long url, here we save it and give a short url
 router.post('/links', async (req, res) => {
@@ -22,8 +12,8 @@ router.post('/links', async (req, res) => {
         return res.status(400).json({message: 'URL required'})
     }
 
-    //generate a short code
-    const shortCode = shortCodeGen()
+    //generate a 6 digit short code
+    const shortCode = nanoid(6)
 
     //in the dtaabse we save the short code and the url as the other colusm already get data automatically set in them
     const link = await prisma.link.create({
