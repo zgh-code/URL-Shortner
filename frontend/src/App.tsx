@@ -1,5 +1,6 @@
 import { linkApi } from "./services/api"
 import { useState } from "react"
+import { VscGithub  } from "react-icons/vsc";
 
 export default function App() {
   const [url, setURl] = useState('')
@@ -34,6 +35,13 @@ export default function App() {
           </div>
         )}
       </div>
+      <a 
+        href="https://github.com/zgh-code/URL-Shortner" 
+        target="_blank"
+        className="fixed bottom-4 right-4 text-gray-400 hover:text-gray-700"
+      >
+        <VscGithub size={24} />
+      </a>
     </div>
   )
 }
