@@ -64,14 +64,20 @@ export default function App() {
             </h2>
             <div className="flex flex-col gap-2">
               {history.map((link, index) => (
-                <div key={index} className={`p-3 rounded-xl border text-sm font-bold ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
+                <div key={index} className={`relative p-3 rounded-xl border text-sm font-bold ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
                   <p className={`truncate ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{link.originalUrl}</p>
                   <a href={link.shortUrl} className="text-blue-500 break-all">{link.shortUrl}</a>
                   <button
                     onClick={() => copyToClipboard(link.shortUrl, index)}
-                    className="text-gray-400 hover:text-gray-600 text-xs ml-2"
+                    className="absolute bottom-2 right-2 text-gray-400 hover:text-gray-600 text-xs ml-2"
                   >
                     {copiedIndex === index ? 'Copied!' : 'Copy'}
+                  </button>
+                  <button 
+                    
+                    className="absolute top-1 right-2 text-white hover:bg-red-500 ml-2 bg-red-300 px-1.5 py 1.5 rounded"
+                  >
+                    x
                   </button>
                 </div>
                 
