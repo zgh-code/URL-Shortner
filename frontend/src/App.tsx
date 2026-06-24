@@ -19,6 +19,16 @@ export default function App() {
     //so after 2 seconds the use state is set back to false so it should just show Copied! then go bak to Copy
     setTimeout(() => setCopiedIndex(null), 2000)
   }
+  const removeFromHistory = (index: number) => {
+    const updatedHistory = []
+    //loop through history only pushing every other index except one we want to delete
+    for (let i = 0; i < history.length; i++) {
+      if (i !== index) {
+        updatedHistory.push(history[i])
+      }
+    }
+    setHistory(updatedHistory)
+  }
   const handleShortening = async () => {
     const data = await linkApi.makeShortURL(url)
     const newLink = { 
@@ -74,7 +84,7 @@ export default function App() {
                     {copiedIndex === index ? 'Copied!' : 'Copy'}
                   </button>
                   <button 
-                    
+                    onClick={() => removeFromHistory(index)}
                     className="absolute top-1 right-2 text-white hover:bg-red-500 ml-2 bg-red-300 px-1.5 py 1.5 rounded"
                   >
                     x
