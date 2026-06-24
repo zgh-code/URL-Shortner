@@ -17,7 +17,7 @@ export default function App() {
     navigator.clipboard.writeText(text)
     setCopiedIndex(index)
     //so after 2 seconds the use state is set back to false so it should just show Copied! then go bak to Copy
-    setTimeout(() => setCopiedIndex(null), 2000)
+    setTimeout(() => setCopiedIndex(null), 1500)
   }
   const removeFromHistory = (index: number) => {
     const updatedHistory = []

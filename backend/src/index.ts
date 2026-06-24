@@ -8,9 +8,10 @@ dotenv.config()
 
 const app = express()
 const PORT = process.env.PORT || 3000
+const FRONTEND_URL = process.env.FRONTEND_URL
 
 //the frontend runs on port 5173
-app.use(cors({ origin: 'http://localhost:5173' }))
+app.use(cors({ origin: FRONTEND_URL || 'http://localhost:5173'}))
 app.use(express.json())
 
 app.use(router)
