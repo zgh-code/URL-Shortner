@@ -34,8 +34,7 @@ router.post('/links', async (req, res) => {
     return res.status(201).json({
         shortCode: link.shortCode,
         originalUrl: link.originalUrl,
-        //need to change this when i deploy 
-        shortUrl: `http://localhost:3000/${link.shortCode}`
+        shortUrl: `${process.env.BASE_URL}/${link.shortCode}`
         
     })
 })
