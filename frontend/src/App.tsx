@@ -10,14 +10,14 @@ export default function App() {
   const [url, setURl] = useState('')
   const [shortUrl, setShortUrl] = useState('')
   const [darkMode, setDarkMode] = useState(false)
-  const [copied, setCopied] = useState(false)
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const [history, setHistory] = useState<LinkHistory[]>([])
   //added a way to copy the shortened licks by just clicking a copy button
-  const copyToClipboard = (text: string) => {
+  const copyToClipboard = (text: string, index: number) => {
     navigator.clipboard.writeText(text)
-    setCopied(true)
+    setCopiedIndex(index)
     //so after 2 seconds the use state is set back to false so it should just show Copied! then go bak to Copy
-    setTimeout(() => setCopied(false), 2000)
+    setTimeout(() => setCopiedIndex(null), 2000)
   }
   const handleShortening = async () => {
     const data = await linkApi.makeShortURL(url)
@@ -68,10 +68,10 @@ export default function App() {
                   <p className={`truncate ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{link.originalUrl}</p>
                   <a href={link.shortUrl} className="text-blue-500 break-all">{link.shortUrl}</a>
                   <button
-                    onClick={() => copyToClipboard(link.shortUrl)}
+                    onClick={() => copyToClipboard(link.shortUrl, index)}
                     className="text-gray-400 hover:text-gray-600 text-xs ml-2"
                   >
-                    {copied ? 'Copied!' : 'Copy'}
+                    {copiedIndex === index ? 'Copied!' : 'Copy'}
                   </button>
                 </div>
                 
