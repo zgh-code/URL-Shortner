@@ -11,12 +11,17 @@ export default function App() {
   const [shortUrl, setShortUrl] = useState('')
   const [darkMode, setDarkMode] = useState(false)
   const [history, setHistory] = useState<LinkHistory[]>([])
+  //added a way to copy the shortened licks by just clicking a copy button
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text)
+  }
   const handleShortening = async () => {
     const data = await linkApi.makeShortURL(url)
     const newLink = { 
       shortUrl: data.shortUrl, 
       originalUrl: url 
     }
+
     
     //make a copy of history array flatten it and add it to new link
     setHistory([newLink, ...history])
@@ -58,7 +63,14 @@ export default function App() {
                 <div key={index} className={`p-3 rounded-xl border text-sm font-bold ${darkMode ? 'bg-gray-700 border-gray-600' : 'bg-gray-50 border-gray-200'}`}>
                   <p className={`truncate ${darkMode ? 'text-gray-300' : 'text-gray-600'}`}>{link.originalUrl}</p>
                   <a href={link.shortUrl} className="text-blue-500 break-all">{link.shortUrl}</a>
+                  <button
+                    onClick={() => copyToClipboard(link.shortUrl)}
+                    className="text-gray-400 hover:text-gray-600 text-xs ml-2"
+                  >
+                    Copy
+                  </button>
                 </div>
+                
               ))}
             </div>
           </div>
