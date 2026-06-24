@@ -12,6 +12,13 @@ router.post('/links', async (req, res) => {
         return res.status(400).json({message: 'URL required'})
     }
 
+    //just check if the link starts with http or https and if not just add it on
+    //as before if someone entered like www.google.com it would break the shortened link 
+    let formattedUrl = originalUrl
+    if (!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://')) {
+        formattedUrl = `https://${originalUrl}`
+    }
+
     //generate a 6 digit short code
     const shortCode = nanoid(6)
 
@@ -19,7 +26,7 @@ router.post('/links', async (req, res) => {
     const link = await prisma.link.create({
         data: {
             shortCode,
-            originalUrl
+            originalUrl: formattedUrl,
         }
     })
 
