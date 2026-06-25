@@ -1,5 +1,6 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/" }
+    
+    { "source": "/:shortCode([a-zA-Z0-9]{6})", "destination": "https://url-shortner-backend-b848.onrender.com" }
   ]
 }
