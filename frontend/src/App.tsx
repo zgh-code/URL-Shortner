@@ -43,7 +43,7 @@ export default function App() {
   }
   return (
     <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
-      <div className={`p-7 rounded-lg shadow-lg border w-full max-w-md ${darkMode ? 'bg-gray-800 border-gray-600' : 'bg-white/70 border-gray-400'}`}>
+      <div className={`p-7 rounded-lg shadow-lg border w-full max-w-md ${darkMode ? 'bg-gray-800 border-gray-400' : 'bg-white/70 border-gray-400'}`}>
         <h1 className={`text-2xl font-bold text-center ${darkMode ? 'text-white' :'text-black'} mb-6`}>URL Shortener</h1>
         <label className={`block ${darkMode ? 'text-white' :'text-black'} text-sm mb-1 mx-auto block w-[85%]`}>Long URL</label>
         <input 
