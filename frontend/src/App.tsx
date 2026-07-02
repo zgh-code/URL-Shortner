@@ -9,6 +9,7 @@ import type { LinkHistory } from './types/LinkHistory'
 export default function App() {
   const [url, setURl] = useState('')
   const [shortUrl, setShortUrl] = useState('')
+  const [error, setError] = useState('')
   const [darkMode, setDarkMode] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const [history, setHistory] = useState<LinkHistory[]>([])
@@ -19,6 +20,27 @@ export default function App() {
     //so after 2 seconds the use state is set back to false so it should just show Copied! then go bak to Copy
     setTimeout(() => setCopiedIndex(null), 1500)
   }
+
+  const showError = (message: string) => {
+    setError(message)
+
+    setTimeout(() => {
+      setError('')
+    }, 1500)
+  }
+
+  const isValidUrl = (url: string) => {
+    try {
+      //if url dosent start with http then we need to add it onto the url 
+      const urlToCheck = url.startsWith('http') ? url : `https://${url}`
+      //need to add a way to check entered url ends with domain 
+      new URL(urlToCheck)
+      return true
+    } catch {
+      return false
+    }
+  }
+
   const removeFromHistory = (index: number) => {
     const updatedHistory = []
     //loop through history only pushing every other index except one we want to delete
@@ -30,32 +52,53 @@ export default function App() {
     setHistory(updatedHistory)
   }
   const handleShortening = async () => {
-    const data = await linkApi.makeShortURL(url)
-    const newLink = { 
-      shortUrl: data.shortUrl, 
-      originalUrl: url 
+    setError('')
+    if (!url) {
+      showError('Please enter a url')
+      return
     }
+    try{
+      if (!isValidUrl(url)) {
+        // if the url entered isnt formated like a url then give an eror 
+        showError('Please enter a valid url')
+        return
+      }
 
-    
-    //make a copy of history array flatten it and add it to new link
-    setHistory([newLink, ...history])
-    setShortUrl(data.shortUrl)
+      const data = await linkApi.makeShortURL(url)
+      const newLink = { 
+        shortUrl: data.shortUrl, 
+        originalUrl: url 
+      }
+      
+      //make a copy of history array flatten it and add it to new link
+      //and slice it so only 4 most recent ones show 
+      setHistory([newLink, ...history].slice(0,4))
+      setShortUrl(data.shortUrl)
+
+      //reset url so its empty in textboxer after user submits 
+      setURl('')
+    } catch (err){
+      showError('Error with inputted url')
+    }
   }
+
   return (
     <div className={`min-h-screen flex items-center justify-center ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
       <div className={`p-7 rounded-lg shadow-lg border w-full max-w-md ${darkMode ? 'bg-gray-800 border-gray-400' : 'bg-white/70 border-gray-400'}`}>
         <h1 className={`text-2xl font-bold text-center ${darkMode ? 'text-white' :'text-black'} mb-6`}>URL Shortener</h1>
+        
         <label className={`block ${darkMode ? 'text-white' :'text-black'} text-sm mb-1 mx-auto block w-[85%]`}>Long URL</label>
         <input 
           type="text" 
           placeholder="Paste your URL here"
           value={url}
           onChange={(event) => setURl(event.target.value)}
-          className={`w-[85%] mx-auto block text-black border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 mb-2`}
+          className={`w-[85%] mx-auto block text-black border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400`}
         />
+        {error && (<p className="w-[90%] mx-auto block text-red-500 text-xs font-semi-bold text-left px-3 mb-2 ">{error}</p>)}
         <button 
           onClick={handleShortening}
-          className="w-[80%] mx-auto block bg-orange-600 hover:bg-gray-400 hover:text-gray-700 text-white font-semibold py-2 rounded mb-4"
+          className="w-[80%] mx-auto block bg-orange-600 hover:bg-gray-400 hover:text-gray-700 text-white font-semibold py-2 rounded mb-4 mt-2"
         >
           Shorten URL
         </button>
