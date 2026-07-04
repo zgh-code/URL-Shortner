@@ -93,6 +93,11 @@ export default function App() {
           placeholder="Paste your URL here"
           value={url}
           onChange={(event) => setURl(event.target.value)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              handleShortening()
+            }
+          }}
           className={`w-[85%] mx-auto block text-black border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400`}
         />
         {error && (<p className="w-[90%] mx-auto block text-red-500 text-xs font-semi-bold text-left px-3 mb-2 ">{error}</p>)}
