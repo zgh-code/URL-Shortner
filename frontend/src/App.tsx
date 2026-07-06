@@ -10,6 +10,7 @@ export default function App() {
   const [url, setURl] = useState('')
   const [shortUrl, setShortUrl] = useState('')
   const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null)
   const [history, setHistory] = useState<LinkHistory[]>([])
@@ -58,6 +59,7 @@ export default function App() {
       return
     }
     try{
+      setLoading(true)
       if (!isValidUrl(url)) {
         // if the url entered isnt formated like a url then give an eror 
         showError('Please enter a valid url')
@@ -77,8 +79,10 @@ export default function App() {
 
       //reset url so its empty in textboxer after user submits 
       setURl('')
+      setLoading(false)
     } catch (err){
       showError('Error with inputted url')
+      setLoading(false)
     }
   }
 
@@ -103,9 +107,10 @@ export default function App() {
         {error && (<p className="w-[90%] mx-auto block text-red-500 text-xs font-semi-bold text-left px-3 mb-2 ">{error}</p>)}
         <button 
           onClick={handleShortening}
-          className="w-[80%] mx-auto block bg-orange-600 hover:bg-gray-400 hover:text-gray-700 text-white font-semibold py-2 rounded mb-4 mt-2"
+          disabled={loading}
+          className="w-[80%] mx-auto block bg-orange-600 hover:bg-gray-400 disabled:hover:bg-orange-600 disabled:hover:text-white hover:text-gray-700 text-white font-semibold py-2 rounded mb-4 mt-2"
         >
-          Shorten URL
+          {loading ? 'Shortening' : 'Shorten URL'}
         </button>
         {shortUrl && (
           <div 
